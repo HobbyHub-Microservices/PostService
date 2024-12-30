@@ -12,4 +12,8 @@ public class AppDbContext : DbContext
     
     public DbSet<Post> Posts { get; set; }
     
+    public DbSet<ViewPost> ViewPosts { get; set; }
+    
+    
+    
 }

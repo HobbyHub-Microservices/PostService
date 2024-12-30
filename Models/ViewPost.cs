@@ -1,11 +1,27 @@
-﻿namespace PostService.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PostService.Models;
 
 public class ViewPost
 {
-    public Guid PostId { get; set; }
+    [Key]
+    [Required]
+    public int PostId { get; set; }
+    
+    [Required]
     public string Title { get; set; }
+    
+    [Required]
     public string Content { get; set; }
+    
+    [Required]
     public string HobbyName { get; set; }
+    
+    [Required]
     public string UserName { get; set; }
+    
+    [Required]
     public DateTime CreatedAt { get; set; }
+    
+    public List<string> ImageUrls { get; set; }
 }

@@ -31,22 +31,29 @@ public class PostRepo : IPostRepo
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Post>> GetAllPostsAsync()
+    public async Task<IEnumerable<ViewPost>> GetAllPostsAsync()
     {
-        return await _context.Posts.ToListAsync();
+        return await _context.ViewPosts.ToListAsync();
     }
 
-    public async Task<Post> GetPostByIdAsync(Guid postId)
+    public async Task<ViewPost> GetPostByIdAsync(int postId)
     {
-        return await _context.Posts.FirstOrDefaultAsync(p => p.PostId == postId) ?? throw new InvalidOperationException();
+        return await _context.ViewPosts.FirstOrDefaultAsync(p => p.PostId == postId);
+    }
+
+    public async Task<IEnumerable<ViewPost>> GetPostByUserName(string UserName)
+    {
+       return await _context.ViewPosts.Where(p => p.UserName == UserName).ToListAsync();
     }
 
     public async Task<IEnumerable<Post>> GetPostsByUserIdAsync(int userId)
     {
         return await _context.Posts
             .Where(p => p.UserId == userId) // Replace with actual logic for User lookup  
-            .ToListAsync();  
+            .ToListAsync();
     }
+    
+    
 
     public async Task<IEnumerable<Post>> GetPostsByHobbyIdAsync(int hobbyId)
     {
