@@ -15,7 +15,6 @@ public class PostController : ControllerBase
 {
     private readonly IPostRepo _repo;
     private readonly IMapper _mapper;
-    private readonly IMesssageBusClient _messageBusClient;
 
 
     public PostController(
@@ -24,7 +23,6 @@ public class PostController : ControllerBase
         IMesssageBusClient messageBusClient
         )
     {
-        _messageBusClient = messageBusClient;
         _repo = repo;
         _mapper = mapper;
     }
@@ -72,7 +70,7 @@ public class PostController : ControllerBase
             
         };
         
-        _messageBusClient.PublishNewPost(postPublishedDto);
+        // _messageBusClient.PublishNewPost(postPublishedDto);
         
         return CreatedAtRoute(nameof(GetPostById), new { Id = postViewDto.PostId }, postViewDto);
     }

@@ -35,15 +35,16 @@ public class MessagebusSubscriber : BackgroundService
             
             _channel.ExchangeDeclare(exchange: "amq.topic", type: ExchangeType.Topic, durable: true);
             _channel.ExchangeDeclare(exchange: "post.topic", type: ExchangeType.Topic, durable: true);
-            
+            _channel.ExchangeDeclare(exchange: "user.command.topic", type: ExchangeType.Topic, durable: true);
+            _channel.ExchangeDeclare(exchange: "hobby.command.topic", type: ExchangeType.Topic, durable: true);
             _queueName = _channel.QueueDeclare().QueueName;
             
             
             _channel.QueueBind(queue: _queueName, exchange: "amq.topic", routingKey: "KK.EVENT.*.HobbyHub.SUCCESS.#");
             _channel.QueueBind(queue: _queueName, exchange: "amq.topic", routingKey: "KK.EVENT.*.HobbyHub.ERROR.#");
             
-            _channel.QueueBind(queue: _queueName, exchange: "hobby.topic", routingKey: "hobby.topic.*");
-            
+            _channel.QueueBind(queue: _queueName, exchange: "hobby.command.topic", routingKey: "hobby.topic.*");
+            _channel.QueueBind(queue: _queueName, exchange: "user.command.topic", routingKey: "user.topic.*");
             
             // // Binding to the user.topic exchange
             // _channel.ExchangeDeclare(exchange: "user.topic", type: ExchangeType.Topic, durable: false);

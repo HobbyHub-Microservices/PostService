@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using AutoMapper;
 using HobbyService.DTO;
+using PostService.Data;
+using PostService.DTOs;
 
 namespace PostService.EventProcessor;
 
@@ -19,21 +21,64 @@ public class EventProcessor : IEventProcessor
         var eventType = DetermineEventType(message);
         switch (eventType)
         {
-            case EventType.HobbyEdited:
-                Console.WriteLine(message);
-                // addUser(message);
-                break;
+            
             case EventType.Undetermined:
                 Console.WriteLine(message);
                 break;
             case EventType.HobbyDeleted:
                 Console.WriteLine(message);
-                // SendHobbyToPost(message);
+                DeleteHobby(message);
+                break;
+            case EventType.UserDeleted:
+                DeleteUser(message);
                 break;
        
         }
     }
+
+    private async Task DeleteHobby(string hobbyPublishedMessage)
+    {
+        using (var scope = _serviceScopeFactory.CreateScope())
+        {
+            var repo = scope.ServiceProvider.GetRequiredService<IPostRepo>();
+            var hobbyPublishedEventDto = JsonSerializer.Deserialize<HobbyDeletePublishedDto>(hobbyPublishedMessage);
     
+            try
+            {
+                // Perform the update using the repository method
+                await repo.DeletedHobby(hobbyPublishedEventDto.Id);
+                Console.WriteLine($"Successfully deleted hobbies");
+     
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not add User to DB {ex.Message}");
+            }
+        }
+    }
+    
+    private async Task DeleteUser(string userPublishedMessage)
+    {
+        using (var scope = _serviceScopeFactory.CreateScope())
+        {
+            var repo = scope.ServiceProvider.GetRequiredService<IPostRepo>();
+            var userPublishedEventDto = JsonSerializer.Deserialize<UserDeletePublishedDto>(userPublishedMessage);
+    
+            try
+            {
+                Console.WriteLine($"UserId = {userPublishedEventDto.Id}");
+                // Perform the update using the repository method
+                await repo.DeletedUserPosts(userPublishedEventDto.Id);
+                Console.WriteLine($"Successfully deleted user posts");
+     
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not add User to DB {ex.Message}");
+            }
+        }
+    }
+
     private EventType DetermineEventType(string notificationMessage)
     {
         Console.WriteLine("--> DetermineEventType");
@@ -42,16 +87,18 @@ public class EventProcessor : IEventProcessor
         {
             var eventType = JsonSerializer.Deserialize<GenericEventDto>(notificationMessage);
         
-            if (eventType?.Event == "Hobby_Edited")
-            {
-                Console.WriteLine("--> Hobby_Edited");
-                return EventType.HobbyEdited;
-            }
             
             if (eventType?.Event == "Hobby_Deleted")
             {
                 Console.WriteLine("--> Hobby_Deleted");
                 return EventType.HobbyDeleted; 
+            }
+            
+
+            if (eventType?.Event == "User_Deleted")
+            {
+                Console.WriteLine("--> User_Deleted");
+                return EventType.UserDeleted;
             }
         }
         catch (Exception ex)
@@ -60,7 +107,7 @@ public class EventProcessor : IEventProcessor
         }
 
         Console.WriteLine("--> Unknown event type detected");
-        return EventType.Undetermined;
+        return EventType.Undetermined;;
     }
 
     // private void addUser(string userPublishedMessage)
@@ -94,7 +141,7 @@ public class EventProcessor : IEventProcessor
 }
 enum EventType
 {
-    HobbyEdited,
     HobbyDeleted,
+    UserDeleted,
     Undetermined
 }

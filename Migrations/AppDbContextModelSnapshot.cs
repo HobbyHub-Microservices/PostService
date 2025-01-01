@@ -56,42 +56,6 @@ namespace PostService.Migrations
 
                     b.ToTable("Posts");
                 });
-
-            modelBuilder.Entity("PostService.Models.ViewPost", b =>
-                {
-                    b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PostId"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("HobbyName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<List<string>>("ImageUrls")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("PostId");
-
-                    b.ToTable("ViewPosts");
-                });
 #pragma warning restore 612, 618
         }
     }

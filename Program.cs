@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 builder.Services.AddHostedService<MessagebusSubscriber>();
 builder.Services.AddScoped<IPostRepo, PostRepo>();
-// builder.Services.AddSingleton<IMesssageBusClient, MessageBusClient>();
+builder.Services.AddSingleton<IMesssageBusClient, MessageBusClient>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
