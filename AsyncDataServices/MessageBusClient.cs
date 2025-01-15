@@ -18,7 +18,9 @@ public class MessageBusClient : IMesssageBusClient
         {
             HostName = _config["RabbitMQHost"],
             Port = int.Parse(_config["RabbitMQPort"] ?? string.Empty),
-            ClientProvidedName = "PostService"
+            ClientProvidedName = "PostService",
+            UserName = _config["RabbitMQUsername"],
+            Password = _config["RabbitMQPassword"]
         };
         try
         {
