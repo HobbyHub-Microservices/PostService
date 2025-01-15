@@ -34,7 +34,7 @@ if (builder.Environment.IsProduction())
         Console.WriteLine($"Host={dbHost};Port={dbPort};Database=Posts;Username={dbUser};Password={dbPassword};Trust Server Certificate=true;");
         
     }
-    builder.Configuration["ConnectionStrings:PostgressConn"] = $"Host={dbHost};Port={dbPort};Database=Users;Username={dbUser};Password={dbPassword};Trust Server Certificate=true;";
+    builder.Configuration["ConnectionStrings:PostgressConn"] = $"Host={dbHost};Port={dbPort};Database=Posts;Username={dbUser};Password={dbPassword};Trust Server Certificate=true;";
     
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgressConn")));
