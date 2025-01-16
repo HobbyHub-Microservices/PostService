@@ -27,7 +27,9 @@ public class MessagebusSubscriber : BackgroundService
         {
             HostName = _configuration["RabbitMQHost"],
             Port = int.Parse(_configuration["RabbitMQPort"] ?? string.Empty),
-            ClientProvidedName = "PostService",
+            ClientProvidedName = "PostCommandService",
+            UserName = _configuration["RabbitMQUsername"],
+            Password = _configuration["RabbitMQPassword"]
         };
             _connection = factory.CreateConnection();
             Console.WriteLine("--> RabbitMQ connection is established.");
