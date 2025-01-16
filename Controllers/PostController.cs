@@ -142,7 +142,7 @@ public class PostController : ControllerBase
     }
     
     [AllowAnonymous]
-    [HttpPost]
+    [HttpPost("test")]
     public async Task<ActionResult<PostViewDto>> CreateTestPost(PostCreateDTO postCreateDto)
     {
         if (!IntegrationMode)
