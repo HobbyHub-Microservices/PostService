@@ -105,7 +105,7 @@ if (!integrationMode)
 }
 
 var app = builder.Build();
-
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -115,7 +115,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
 }
-app.UseRouting();
+
 app.MapControllers(); 
 app.MapMetrics();
 app.UseHttpsRedirection();
