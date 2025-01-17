@@ -145,6 +145,7 @@ public class PostController : ControllerBase
     [HttpPost("test")]
     public async Task<ActionResult<PostViewDto>> CreateTestPost(PostCreateDTO postCreateDto)
     {
+        Console.WriteLine("--> Posting test post/ Integration test");
         if (!IntegrationMode)
         {
             return NotFound();
@@ -154,6 +155,7 @@ public class PostController : ControllerBase
             Console.WriteLine("Invalid jwt inside integration test");
             return Unauthorized();
         }
+        
         var post = _mapper.Map<Post>(postCreateDto);
         await _repo.CreatePost(post);
         _repo.SaveChanges();
